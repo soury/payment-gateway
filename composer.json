@@ -1,0 +1,21 @@
+{
+    "name": "soury/pagamenti-online",
+    "description": "Modulo che rachiude vari plugin di pagamento online",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Sourazou Bountoulgou",
+            "email": "sourazou1997@gmail.com"
+        }
+    ],
+    "require": {
+        "php" : ">=7.0",
+        "psr/log": "^1.0"
+    },
+    "require-dev": { },
+    "autoload": {
+        "psr-4": {
+            "PagamentiOnline\\": "src/"
+        }
+    }
+}
