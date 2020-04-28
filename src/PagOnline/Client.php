@@ -222,7 +222,8 @@ class Client extends Pagamento
         return [
             'paymentId' => $response->getPaymentId(),
             'tranId' => $response->getShopId(),
-            'redirectUrl' => $response->getRedirectUrl()
+            'redirectUrl' => $response->getRedirectUrl(),
+            'errorDesc' => $response->getErrorDesc()
         ];
     }
 

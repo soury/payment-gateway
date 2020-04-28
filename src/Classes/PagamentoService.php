@@ -13,7 +13,7 @@ class PagamentoService
 
     public function __construct($configs = array()) 
     {
-        if(!count($configs)) $configs = include('config/pagamentiOnline.php');
+        if(!$configs || !count($configs)) $configs = include('config/pagamentiOnline.php');
 
         $this->pagamento = new Pagamento();
 
@@ -32,8 +32,13 @@ class PagamentoService
 
     public function getPaymentUrl($params)
     {
-        if($this->notifyUrl) $params['notifyUrl'] = $this->notifyUrl.'?shopId='.$params['shopId'];
-        if($this->errorUrl) $params['errorUrl'] = $this->errorUrl.'?shopId='.$params['shopId'];
+        if(isset($params['urlParameters'])){
+            if($this->notifyUrl) $params['notifyUrl'] = $this->notifyUrl.'?'.$params['urlParameters'];
+            if($this->errorUrl) $params['errorUrl'] = $this->errorUrl.'?'.$params['urlParameters'];
+        }else{
+            if($this->notifyUrl) $params['notifyUrl'] = $this->notifyUrl.'?shopId='.$params['shopId'];
+            if($this->errorUrl) $params['errorUrl'] = $this->errorUrl.'?shopId='.$params['shopId'];
+        }
         return $this->pagamento->createPayment($params);
     }
 

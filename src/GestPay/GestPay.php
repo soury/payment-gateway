@@ -535,7 +535,7 @@ class GestPay extends Pagamento
             'buyerEmail' => $response['buyerEmail'],
             'customInfo' => $response['customInfo']
         ];
-        return $response;
+        return $result;
 	}
 
 	/** Reads the currently received parameters from the current page.

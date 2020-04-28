@@ -21,6 +21,6 @@ return [
     'kSig'	=> 'UNI_TESTKEY',
     'tid'	=> 'UNI_SEL',
     'wsdl'	=> 'https://testeps.netswgroup.it/UNI_CG_SERVICES/services/PaymentInitGatewayPort?wsdl',
-    'notifyUrl' => 'http://2.233.131.39/Pagamenti/index.php',
-    'errorUrl' => 'http://2.233.131.39/Pagamenti/index.php',
+    'notifyUrl' => '',
+    'errorUrl' => '',
 ];
