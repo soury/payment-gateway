@@ -181,13 +181,13 @@ class GestPay extends Pagamento
 		foreach($tags as $dataKey => $outKey) {
 			if(array_key_exists($dataKey, $data)) {
 				$value = strval($data[$dataKey]);
-				switch($dataKey) {
+				/*switch($dataKey) {
 					case 'amount':
 						if($this->getTest() && self::$useTinyAmountForTest) {
 							$value = '0.12';
 						}
 						break;
-				}
+				}*/
 				$fields[] = "$outKey=" . self::encodeFieldValue($value);
 			}
 		}
