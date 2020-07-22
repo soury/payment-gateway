@@ -10,6 +10,10 @@ use PagamentiOnline\PagOnline\PaymentInit\Response as InitResponse;
 
 use PagamentiOnline\PagOnline\PaymentVerify\Request as VerifyRequest;
 use PagamentiOnline\PagOnline\PaymentVerify\Response as VerifyResponse;
+
+use PagamentiOnline\PagOnline\PaymentCredit\Request as CreditRequest;
+use PagamentiOnline\PagOnline\PaymentCredit\Response as CreditResponse;
+
 use PagamentiOnline\PagOnline\SoapClient\WrapperInterface;
 
 use PagamentiOnline\PagOnline\Lists\Currency;
@@ -435,6 +439,102 @@ class Client extends Pagamento
         return new VerifyResponse($rawSoapResponseObject);
     }
 
+    public function setCredit($params=array())
+    {
+        $shopId;
+        $amount;
+        $refTranID;
+        $splitTran=null;
+        $addInfo1=null;
+        $addInfo2=null;
+        $addInfo3=null;
+        $addInfo4=null;
+        $addInfo5=null;
+        if(isset($params['shopId'])) $shopId = $params['shopId'];
+        if(isset($params['amount'])) $amount = $params['amount'];
+        if(isset($params['refTranID'])) $refTranID = $params['refTranID'];
+        if(isset($params['splitTran'])) $splitTran = $params['splitTran'];
+        if(isset($params['addInfo1'])) $addInfo1 = $params['addInfo1'];
+        if(isset($params['addInfo2'])) $addInfo2 = $params['addInfo2'];
+        if(isset($params['addInfo3'])) $addInfo3 = $params['addInfo3'];
+        if(isset($params['addInfo4'])) $addInfo4 = $params['addInfo4'];
+        if(isset($params['addInfo5'])) $addInfo5 = $params['addInfo5'];
+
+        $response = $this->paymentCredit($shopId,$amount,$refTranID,$splitTran,$addInfo1,$addInfo2,$addInfo3,$addInfo4,$addInfo5);
+
+        $result = [
+            'tranId' => $response->getShopId(),
+            'bankId' => $response->getTranId(),
+            'errorCode' => $response->getError(),
+            'errorDesc' => $response->getErrorDesc(),
+            'tranResult' => $response->getStatus(),
+            'authorizationCode' => $response->getAuthCode(),
+            'currency' => '',
+            'amount' => null,
+            'country' => '',
+            'buyerName' => '',
+            'buyerEmail' => '',
+            'customInfo' => []
+        ];
+        return $result;
+    }
+
+
+    public function paymentCredit($shopId,$amount,$refTranID,$splitTran=null,$addInfo1=null,$addInfo2=null,$addInfo3=null,$addInfo4=null,$addInfo5=null){
+        if (!$this->isInitialized()) {
+            throw new \LogicException('Please initialize the client before trying to perform paymentInit operations');
+        }
+
+        if ($shopId) {
+            if (strlen($shopId) > 35) {
+                throw new \InvalidArgumentException('Shop Id is too long (max 35 chars)');
+            }
+
+            if (!preg_match("#^[a-zA-Z0-9/\-\?\:\(\)\.,'\+ ]*$#", $shopId)) {
+                throw new \InvalidArgumentException('Shop Id can only contain chars a-z A-Z 0-9 /-?:().,\'+<space>');
+            }
+        }
+
+        //@todo more validation
+
+        try {
+            $request = new CreditRequest();
+
+            $request->setShopId($shopId);
+            $request->setAmount($amount);  //<-- The setter performs the validation and the conversion
+            $request->setRefTranID($refTranID);
+            $request->setSplitTran($splitTran);
+            $request->setAddInfo1($addInfo1);
+            $request->setAddInfo2($addInfo2);
+            $request->setAddInfo3($addInfo3);
+            $request->setAddInfo4($addInfo4);
+            $request->setAddInfo5($addInfo5);
+            $request->setTid($this->tId);
+        } catch (\Exception $ex) {
+            $this->log('An error occurred while initializing the Init request: '.$ex->getMessage(), LogLevel::CRITICAL);
+            throw $ex;
+        }
+
+        $this->sign($request);
+
+        try {
+            $rawSoapResponseObject = $this->soapClientWrapper->credit(array('request' => ($request->toArray())));
+        } finally {
+            //The "finally" statement is used to ensure that something is logged even if an error occurred
+            $this->log('Raw request: ' . $this->soapClientWrapper->getLastRequest());
+            $this->log('Raw response: ' . $this->soapClientWrapper->getLastResponse());
+        }
+
+        if (isset($rawSoapResponseObject->response->error) && !empty($rawSoapResponseObject->response->error)) {
+            $this->log('Failure response received: ' . print_r($rawSoapResponseObject, true));
+        } else {
+            $this->log('Succesful response received: ' . print_r($rawSoapResponseObject, true));
+        }
+
+        return new CreditResponse($rawSoapResponseObject);
+    }
+
+
     /**
      * @return bool
      */
@@ -459,7 +559,6 @@ class Client extends Pagamento
     protected function sign(SignableInterface $request)
     {
         $signatureCalculator = new SignatureCalculator($this->logger);
-        
         $signatureCalculator->sign($request, $this->kSig);
     }
 }

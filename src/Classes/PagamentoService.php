@@ -11,7 +11,7 @@ class PagamentoService
     private $notifyUrl;
     private $errorUrl;
 
-    public function __construct($configs = array()) 
+    public function __construct($configs = array(), $wsdl=null) 
     {
         if(!$configs || !count($configs)) $configs = include('config/pagamentiOnline.php');
 
@@ -20,7 +20,8 @@ class PagamentoService
         switch($configs['classe']) {
             case 'pagOnline':
                 $this->pagamento = new Client(new TestLogger());
-                $this->pagamento->init($configs['test'], $configs['kSig'], $configs['tid'], $configs['wsdl']);
+                $wsdl = $wsdl ? $wsdl : $configs['wsdl'];
+                $this->pagamento->init($configs['test'], $configs['kSig'], $configs['tid'], $wsdl);
                 $this->notifyUrl = $configs['notifyUrl'];
                 $this->errorUrl = $configs['errorUrl'];
                 break;
@@ -45,5 +46,9 @@ class PagamentoService
     public function checkPaymentResult($params=array())
     {
         return $this->pagamento->paymentStatus($params);
+    }
+    public function credit($params=array())
+    {
+        return $this->pagamento->setCredit($params);
     }
 }

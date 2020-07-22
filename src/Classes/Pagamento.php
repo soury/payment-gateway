@@ -11,4 +11,8 @@ class Pagamento
     {
         
     }
+    public function setCredit($params = array())
+    {
+        
+    }
 }

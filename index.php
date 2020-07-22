@@ -3,20 +3,20 @@ require "vendor/autoload.php";
 use PagamentiOnline\Classes\PagamentoService;
 
 try {
-    $pagamento = new PagamentoService();
+$pagamento = new PagamentoService([]/*, 'https://testeps.netswgroup.it/UNI_CG_SERVICES/services/PaymentTranGatewayPort?wsdl'*/);
 
     /*
     * Example paymentUrl request data pagOnline
     */
     
     /*$params = [
-        'trType' => 'AUTH',
+        'trType' => 'PURCHASE',
         'floatAmount' => 1.00,
         'languageCode' => 'IT',
         'notifyUrl' => 'http://2.233.131.39/Pagamenti/index.php',
         'errorUrl' => 'http://2.233.131.39/Pagamenti/index.php',
         'currencyCode' => 'EUR',
-        'shopId' => '411111118545555',
+        'shopId' => '411111115455555',
         'ShopUserName' => 'John Doe',
         'ShopUserAccount' => 'john@doe.com'
     ];
@@ -26,7 +26,20 @@ try {
     /*
     * Example checkPaymentResult request data pagOnline
     */
-    //$data = $pagamento->checkPaymentResult(['shopId' => '411111118545555','paymentId' => '00114178420102127597']);
+    /*$data = $pagamento->checkPaymentResult(['shopId' => '411111115455555','paymentId' => '00203574029102262186']);
+    var_dump($data);*/
+
+    /*
+    * Example credit data pagOnline
+    */
+    
+    /*$params = [
+        'amount' => 1.00,
+        'shopId' => '411111115455555',
+        'refTranID' => '3056476690463954'
+    ];
+    $reponse = $pagamento->credit($params);
+    var_dump($reponse);*/
 
 
     /*

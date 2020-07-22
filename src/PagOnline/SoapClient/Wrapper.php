@@ -45,6 +45,14 @@ class Wrapper implements WrapperInterface
     /**
      * {@inheritdoc}
      */
+    public function credit(array $requestData)
+    {
+        return $this->getSoapClient()->credit($requestData);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLastRequest()
     {
         return $this->getSoapClient()->__getLastRequest();
