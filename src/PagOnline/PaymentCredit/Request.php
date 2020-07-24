@@ -248,7 +248,7 @@ class Request implements SignableInterface
         $data .= $this->shopId;
         $data .= $this->amount;
         $data .= $this->refTranID;
-        $data .= $this->splitTran;
+        //$data .= $this->splitTran;
         $data .= $this->addInfo1;
         $data .= $this->addInfo2;
         $data .= $this->addInfo3;
