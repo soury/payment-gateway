@@ -229,7 +229,7 @@ class Response extends PaymentResponse
         if (!$this->error) {
             //These should always be there
             $this->tranId = $data->tranID;
-            $this->authCode = $data->authCode;
+            $this->authCode = isset($data->authCode) ? $data->authCode : null;
 
             //These are for non-Mybank transactions
             $this->enrStatus = isset($data->enrStatus) ? $data->enrStatus : 'N';
