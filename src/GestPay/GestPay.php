@@ -530,10 +530,10 @@ class GestPay extends Pagamento
             'authorizationCode' => $response['authorizationCode'],
             'currency' => $response['currency'],
             'amount' => $response['amount'],
-            'country' => $response['country'],
-            'buyerName' => $response['buyerName'],
-            'buyerEmail' => $response['buyerEmail'],
-            'customInfo' => $response['customInfo']
+            'country' => isset($response['country']) ? $response['country'] : '',
+            'buyerName' => isset($response['buyerName']) ? $response['buyerName'] : '',
+            'buyerEmail' => isset($response['buyerEmail']) ? $response['buyerEmail'] : '',
+            'customInfo' => isset($response['customInfo']) ? $response['customInfo'] : ''
         ];
         return $result;
 	}
