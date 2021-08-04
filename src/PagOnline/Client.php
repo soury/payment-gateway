@@ -154,7 +154,7 @@ class Client extends Pagamento
         $this->tId = $tid;
         $soapOptions = array(
             'compression' => defined('SOAP_COMPRESSION_ACCEPT') ? SOAP_COMPRESSION_ACCEPT : 32,
-            'soap_version' => SOAP_1_1,
+            'soap_version' => defined('SOAP_1_1') ? SOAP_1_1 : 1,
             'trace' => true,
         );
         if (!extension_loaded('soap')) {
