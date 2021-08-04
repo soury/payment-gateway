@@ -147,10 +147,13 @@ class Client extends Pagamento
             throw new \InvalidArgumentException('Missing WSDL URL');
         }
 
+        if (defined('VAR_NAME')) {
+            // Something
+        }
         $this->kSig = $kSig;
         $this->tId = $tid;
         $soapOptions = array(
-            'compression' => SOAP_COMPRESSION_ACCEPT,
+            'compression' => defined('SOAP_COMPRESSION_ACCEPT') ? SOAP_COMPRESSION_ACCEPT : 32,
             'soap_version' => SOAP_1_1,
             'trace' => true,
         );
