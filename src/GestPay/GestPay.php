@@ -528,7 +528,7 @@ class GestPay extends Pagamento
             'errorDesc' => $response['errorDescription'],
             'tranResult' => $response['transactionResult'],
             'authorizationCode' => $response['authorizationCode'],
-            'currency' => $response['currency'],
+            'currency' => isset($response['currency']) ? $response['currency'] : '',
             'amount' => $response['amount'],
             'country' => isset($response['country']) ? $response['country'] : '',
             'buyerName' => isset($response['buyerName']) ? $response['buyerName'] : '',
